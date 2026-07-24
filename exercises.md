@@ -16,12 +16,12 @@ Gọi `call_openai` với temperature 0.0, 0.7, 1.2 và 1.8 dùng prompt
 
 **Bạn nhận thấy quy luật gì qua bốn phản hồi? Ở mức nào phản hồi bắt đầu
 kém mạch lạc?** (2–3 câu)
-> *Câu trả lời của bạn*
+> *Trong các lần thử, khi tăng temp lên, các phản hồi có khả năng diễn đạt đa dạng hơn. Câu trả lời cho câu hỏi "ở mwusc nào phản hồi bát đầu kém mạch lạc" thì nó phụ thuộc vào model, bản thân các llm (như ở đây model được test là gemini 3.1 flash) dù ở temp 0.0 vẫn có thể diễn đạt tự nhiên, mạch lạc, chỉ là nó không thể nói hay, đa dạng, tự nhiên như ở các mức temp cao hơn mà thôi*
 
 ### Câu 1.2 — Chọn temperature cho sản phẩm
 **Bạn sẽ đặt temperature bao nhiêu cho trợ lý soạn thảo hợp đồng pháp lý,
 và bao nhiêu cho trợ lý viết slogan quảng cáo? Giải thích khác biệt.**
-> *Câu trả lời của bạn*
+> *Với trường hợp của trợ lý soạn thảo hợp đồng pháp lý, đây là một lĩnh vực cần tính chính xác và độ chặt chẽ phải cao, ngôn từ chuẩn mực.. Do đó việc sáng tạo, hay phát ngôn quá tự do sẽ làm độ tin cậy hệ thống giảm đi rõ rệt, temperature tốt nhất từ 0.1 - 0.2 là đủ. Còn với trường hợp của trợ lý viết slogan quảng cáo thì đây là một trường hợp hoàn toàn trái ngược, slogan thì cần có tính độc đáo và tính sáng tạo cao. Do đó temperature ở trường hợp này sẽ cao vào khoảng 0.8 - 1.0, việc để cao như thế cũng giúp cho model có thể đưa ra nhiều yếu tố sáng tạo, ý tưởng mới mẻ hơn*
 
 ### Câu 1.3 — Đánh đổi chi phí
 Kịch bản: 20.000 người dùng hoạt động mỗi ngày, mỗi người gọi API 2 lần,
@@ -30,7 +30,8 @@ mỗi lần trung bình ~500 token đầu ra.
 **Ước tính chi phí mỗi ngày của model lớn so với model nhỏ cho workload này
 (dựa trên bảng giá trong template). Nêu một trường hợp model lớn xứng đáng
 với chi phí và một trường hợp model nhỏ là lựa chọn đúng:**
-> *Câu trả lời của bạn*
+> *Nếu theo bảng giá của template.py thì tổng token đầu ra mỗi ngày vào khoảng 200 USD/ngày cho gpt4o và gpt 4o mini sẽ khoảng 12 USD/ngày. Vậy model lớn đắt hơn nhiều, chỉ xứng đáng cho các task phức tạo, rủi ro cao như phân tích điều khoản hợp đồng...; Ngược lại model nhỏ lại phù hợp cho các task như phân loại yêu câu/trích xuất thông tin đơn giản/....*
+
 
 ---
 
@@ -46,16 +47,15 @@ khác nhau:
 **Hai phản hồi khác nhau như thế nào (giọng văn, độ dài, mức kỹ thuật)?
 Từ đó rút ra system prompt điều khiển được những khía cạnh nào của phản hồi?**
 (3–4 câu)
-> *Câu trả lời của bạn*
+> *Với persona nhà thơ, phản hồi sẽ ngắn hơn, giàu hình ảnh ví von, tránh thuật ngữ kỹ thuật/toán/coding..Còn với persona senior software engineer thì câu trả lời sẽ dài và có cấu trúc rõ ràng hơn, minh họa các khái niệm bằng toán/công thức/... Qua đó ta thấy rõ system prompt có thể điều khiển giọng văn, từ vựng, chuyên môn,...Tuy nhiên vẫn chỉ ở mức định hướng hành vi*
 
 ### Câu 2.2 — tiktoken vs đếm từ
 Chọn một đoạn văn tiếng Việt ~150 từ. So sánh số token theo `count_tokens`
 (tiktoken) với ước lượng `số từ / 0.75` mà Part 1 đã dùng.
-
 **Hai con số chênh nhau bao nhiêu phần trăm? Nếu dùng ước lượng thô để dự
 toán ngân sách API cho ứng dụng tiếng Việt, bạn sẽ dự toán thiếu hay thừa —
 và vì sao?**
-> *Câu trả lời của bạn*
+> *Tùy trường hợp mà độ chênh lệch cụ thể sẽ khác nhau, nhưng cơ bản là có chênh lệch. Nguyên nhân là do token không tương ứng với tỉ lệ từ cố định, bộ encoder có thể encode khá hiệu quả các từ và ký tự tiếng việt phổ biến nhưng tên riêng, các từ hiếm,... có thể sẽ tạo ra kết quả khác. Nên không thể kết luận được ngay à phải kiểm thử trên một lượng data đủ*
 
 ---
 
@@ -65,13 +65,13 @@ và vì sao?**
 **Xét ba ứng dụng: (a) chatbot văn bản, (b) trợ lý giọng nói đọc to phản hồi,
 (c) pipeline dịch tài liệu chạy ngầm ban đêm. Ứng dụng nào hưởng lợi nhiều
 nhất từ streaming, ứng dụng nào không cần — và tại sao?** (1 đoạn văn)
-> *Câu trả lời của bạn*
+> *Trợ lý giọng nói hưởng lợi nhiều nhất vì có thể bắt đầu chuyển phần phản hồi đầu tiên thành âm thành và đọc luôn cho user, giúp cuộc hội thoại có vẻ tự niên hơn, giảm độ trễ cảm nhận của user. Chatbot văn bản cũng hưởng lợi vì người dùng sẽ có thể đọc từ từ trong lúc đợi model hoàn thành câu trả lời thay vì bắt user đợi một lúc quá lâu, giảm đáng kể trải nghiệm. Còn ngược lại, pipeline dịch tài liệu chạy ngầm ban đêm lại không cần streaming vì không có người dùng trực tiếp. Yếu tố cốt lõi vẫn là nhu cầu và trải nghiệm người dùng*
 
 ### Câu 3.2 — Vì sao backoff theo cấp số nhân?
 **Khi API quá tải và hàng nghìn client cùng retry, exponential backoff giúp
 gì so với delay cố định? Tra cứu thêm: kỹ thuật "jitter" (thêm độ trễ ngẫu
 nhiên) giải quyết vấn đề gì còn sót lại?**
-> *Câu trả lời của bạn*
+> *So với delay cố định thì backoff này giúp cho giảm mạnh/nhanh tần suất request cũng như cho API thêm thời gian phục hồi. Thay nhiên nếu nhiều client cùng gặp lỗi và dùng cùng một công thức backoff thì có thể gây ra retry theo từng đợt. Jitter giúp thêm một khoảng ngẫu nhiên vào thời gian chờ để phân tán các request*
 
 ---
 
@@ -81,13 +81,13 @@ nhiên) giải quyết vấn đề gì còn sót lại?**
 **Viết lại system prompt bạn dùng cho trợ lý của mình. Chỉ ra 2 chỗ trong
 prompt mà nếu xóa đi, hành vi trợ lý sẽ thay đổi rõ rệt — và mô tả thay đổi
 đó:**
-> *Câu trả lời của bạn*
+> *System prompt tôi sử dụng là: “Bạn là trợ giảng thân thiện của khóa AI, trả lời ngắn gọn bằng tiếng Việt.” Nếu xóa cụm “trợ giảng thân thiện của khóa AI”, model sẽ trở thành một trợ lý chung, ít tập trung vào nội dung AI và có thể không giải thích theo hướng hỗ trợ người học. Nếu xóa cụm “trả lời ngắn gọn bằng tiếng Việt”, phản hồi có thể dài dòng hơn, thậm chí sử dụng ngôn ngữ khác hoặc không giữ được cách trình bày súc tích mà người dùng mong muốn*
 
 ### Câu 4.2 — Hạn chế & cải thiện
 **Trợ lý của bạn giữ history 4 lượt cuối. Hãy mô tả một tình huống hội thoại
 cụ thể mà giới hạn này khiến trợ lý trả lời sai/mất ngữ cảnh, và đề xuất một
 cách khắc phục (ví dụ: tóm tắt các lượt cũ, tăng giới hạn có chọn lọc...):**
-> *Câu trả lời của bạn*
+> *Ví dụ, ở lượt đầu người dùng yêu cầu xây dựng chatbot chạy trên Windows, dùng Python 3.13, chỉ sử dụng Gemini miễn phí và tuyệt đối không ghi API key vào mã nguồn. Sau hơn bốn lượt trao đổi về giao diện, streaming, logging và xử lý lỗi, người dùng nói “hãy viết cấu hình hoàn chỉnh theo các yêu cầu ban đầu”; lúc này lượt đầu đã bị loại khỏi history nên trợ lý có thể dùng thư viện không tương thích, chọn dịch vụ trả phí hoặc hardcode API key. Cách khắc phục là duy trì một bản tóm tắt ngắn gọn chứa các yêu cầu, và nhồi vào system prompt mỗi 4 lượt 1 lần*
 
 ---
 
